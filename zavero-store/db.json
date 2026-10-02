@@ -1,5 +1,19 @@
 {
-  "users": [],
+  "users": [
+    {
+      "name": "fidha",
+      "email": "fidha@gamil.com",
+      "password": "1234",
+      "id": "pLT2492sA5E"
+    },
+    {
+      "name": "muhammed",
+      "email": "muha@gmail.com",
+      "password": "1234",
+      "id": "HK4FMJtvz3A"
+    }
+  ],
   "products": [],
-  "orders": []
+  "orders": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }
