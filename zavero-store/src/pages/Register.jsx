@@ -150,7 +150,7 @@ function Register() {
       <div className="w-1/2 min-h-screen">
 
         <img
-          src="/login.png"
+          src="/eddie.png"
           alt="ZAVERO Men's Fashion"
           className="w-full h-full object-cover"
         />

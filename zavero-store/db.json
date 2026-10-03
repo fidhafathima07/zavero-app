@@ -1,19 +1,152 @@
 {
   "users": [
     {
-      "name": "fidha",
-      "email": "fidha@gamil.com",
-      "password": "1234",
-      "id": "pLT2492sA5E"
+      "id": "1",
+      "name": "Demo User",
+      "email": "demo@gmail.com",
+      "password": "123456"
     },
     {
-      "name": "muhammed",
-      "email": "muha@gmail.com",
+      "name": "fidha",
+      "email": "fidha@gmail.com",
       "password": "1234",
-      "id": "HK4FMJtvz3A"
+      "id": "VPMHvuLp78Y"
     }
   ],
-  "products": [],
-  "orders": [],
+  "products": [
+    {
+      "id": "1",
+      "title": "Classic Black Shirt",
+      "category": "Shirts",
+      "price": 1499,
+      "image": "bls.png",
+      "stock": 11
+    },
+    {
+      "id": "2",
+      "title": "Premium White Shirt",
+      "category": "Shirts",
+      "price": 1699,
+      "image": "whs.png",
+      "stock": 5
+    },
+    {
+      "id": "3",
+      "title": "Relaxed fit T-SHIRT",
+      "category": "T-Shirts",
+      "price": 999,
+      "image": "wht.png",
+      "stock": 12
+    },
+    {
+      "id": "4",
+      "title": "Essential Black T-Shirt",
+      "category": "T-Shirts",
+      "price": 899,
+      "image": "blt.png",
+      "stock": 20
+    },
+    {
+      "id": "5",
+      "title": "Vintage Jeans",
+      "category": "Trousers",
+      "price": 1899,
+      "image": "vintage.png",
+      "stock": 7
+    },
+    {
+      "id": "6",
+      "title": "Classic Black Trousers",
+      "category": "Trousers",
+      "price": 1999,
+      "image": "twsr.png",
+      "stock": 10
+    },
+    {
+      "id": "7",
+      "title": "ZAVERO Formal Blazer",
+      "category": "Formal",
+      "price": 3999,
+      "image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
+      "stock": 3
+    },
+    {
+      "id": "8",
+      "title": "Minimal Grey Blazer",
+      "category": "Formal",
+      "price": 4299,
+      "image": "https://images.unsplash.com/photo-1555069519-127aadedf1ee?auto=format&fit=crop&w=800&q=80",
+      "stock": 0
+    }
+  ],
+  "orders": [
+    {
+      "userId": "VPMHvuLp78Y",
+      "items": [
+        {
+          "id": "7",
+          "title": "ZAVERO Formal Blazer",
+          "category": "Formal",
+          "price": 3999,
+          "image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
+          "stock": 5,
+          "quantity": 2
+        },
+        {
+          "id": "8",
+          "title": "Minimal Grey Blazer",
+          "category": "Formal",
+          "price": 4299,
+          "image": "https://images.unsplash.com/photo-1555069519-127aadedf1ee?auto=format&fit=crop&w=800&q=80",
+          "stock": 4,
+          "quantity": 4
+        }
+      ],
+      "total": 25194,
+      "address": "hyyy",
+      "paymentMethod": "Cash on Delivery",
+      "status": "Placed",
+      "createdAt": "2026-10-02T14:56:45.728Z",
+      "id": "phcx84d13Og"
+    },
+    {
+      "userId": "VPMHvuLp78Y",
+      "items": [
+        {
+          "id": "2",
+          "title": "Premium White Shirt",
+          "category": "Shirts",
+          "price": 1699,
+          "image": "whs.png",
+          "stock": 8,
+          "quantity": 3
+        },
+        {
+          "id": "3",
+          "title": "Relaxed fit T-SHIRT",
+          "category": "T-Shirts",
+          "price": 999,
+          "image": "wht.png",
+          "stock": 15,
+          "quantity": 3
+        },
+        {
+          "id": "1",
+          "title": "Classic Black Shirt",
+          "category": "Shirts",
+          "price": 1499,
+          "image": "bls.png",
+          "stock": 12,
+          "quantity": 1
+        }
+      ],
+      "total": 9593,
+      "address": "xbbcbcbcbcbcbc",
+      "paymentMethod": "Cash on Delivery",
+      "status": "Placed",
+      "createdAt": "2026-10-02T18:01:58.920Z",
+      "id": "T6zujGqinhM"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
