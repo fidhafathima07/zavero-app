@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  removeFromWishlist,
+  deleteWishlistItem,
   clearWishlist,
 } from "../redux/slices/wishlistSlice";
 
-import { addToCart } from "../redux/slices/cartSlice";
+import { addProductToCart } from "../redux/slices/cartSlice";
 
 function Wishlist() {
   const dispatch = useDispatch();
@@ -19,16 +19,49 @@ function Wishlist() {
     (state) => state.cart.items
   );
 
+  const user = useSelector(
+    (state) => state.auth.user
+  );
+
   const handleMoveToCart = (product) => {
-    dispatch(addToCart(product));
-    dispatch(removeFromWishlist(product.id));
+    const existingItem = cartItems.find(
+      (item) =>
+        String(item.id) ===
+        String(product.id)
+    );
+
+    if (product.stock <= 0) {
+      return;
+    }
+
+    if (
+      existingItem &&
+      existingItem.quantity >= product.stock
+    ) {
+      alert(
+        "Maximum available stock already in cart."
+      );
+      return;
+    }
+
+    dispatch(
+      addProductToCart({
+        userId: user.id,
+        product,
+        quantity: 1,
+      })
+    );
+
+    dispatch(
+      deleteWishlistItem(product.wishlistId)
+    );
   };
 
   return (
     <div className="min-h-screen bg-[#f7f6f2] text-[#111111]">
 
-      {/* NAVBAR */}
       <nav className="bg-[#f7f6f2] border-b border-gray-200">
+
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-7 flex items-center justify-between">
 
           <Link
@@ -39,39 +72,59 @@ function Wishlist() {
           </Link>
 
           <div className="hidden md:flex items-center gap-10 text-[11px] tracking-[0.2em]">
-            <Link to="/" className="hover:opacity-50">
+
+            <Link
+              to="/"
+              className="hover:opacity-50"
+            >
               HOME
             </Link>
 
-            <Link to="/shop" className="hover:opacity-50">
+            <Link
+              to="/shop"
+              className="hover:opacity-50"
+            >
               SHOP
             </Link>
 
-            <Link to="/wishlist" className="font-semibold">
+            <Link
+              to="/wishlist"
+              className="font-semibold"
+            >
               WISHLIST
             </Link>
 
-            <Link to="/about" className="hover:opacity-50">
+            <Link
+              to="/about"
+              className="hover:opacity-50"
+            >
               ABOUT
             </Link>
+
           </div>
 
           <div className="flex items-center gap-5 text-[11px] tracking-[0.15em]">
 
-            <Link to="/cart" className="hover:opacity-50">
+            <Link
+              to="/cart"
+              className="hover:opacity-50"
+            >
               CART ({cartItems.length})
             </Link>
 
-            <Link to="/login" className="hover:opacity-50">
+            <Link
+              to="/login"
+              className="hover:opacity-50"
+            >
               LOGIN
             </Link>
 
           </div>
 
         </div>
+
       </nav>
 
-      {/* HEADER */}
       <section className="py-20 md:py-28 px-6">
 
         <div className="max-w-7xl mx-auto">
@@ -96,7 +149,6 @@ function Wishlist() {
 
       </section>
 
-      {/* EMPTY WISHLIST */}
       {wishlistItems.length === 0 ? (
 
         <section className="max-w-7xl mx-auto px-6 pb-32">
@@ -110,6 +162,10 @@ function Wishlist() {
             <h2 className="text-3xl md:text-4xl font-light mt-5">
               Save something you love.
             </h2>
+
+            <p className="text-sm text-gray-500 mt-5">
+              Discover something from the ZAVERO collection.
+            </p>
 
             <Link
               to="/shop"
@@ -129,8 +185,12 @@ function Wishlist() {
           <div className="flex justify-end mb-8">
 
             <button
-              onClick={() => dispatch(clearWishlist())}
-              className="text-[10px] tracking-[0.2em] underline"
+              onClick={() =>
+                dispatch(
+                  clearWishlist(wishlistItems)
+                )
+              }
+              className="text-[10px] tracking-[0.2em] underline hover:opacity-50"
             >
               CLEAR WISHLIST
             </button>
@@ -143,12 +203,18 @@ function Wishlist() {
 
               <div key={product.id}>
 
-                <Link to={`/product/${product.id}`}>
+                <Link
+                  to={`/product/${product.id}`}
+                >
 
                   <div className="h-[420px] bg-gray-100 overflow-hidden group">
 
                     <img
-                      src={product.image}
+                      src={
+                        product.image?.startsWith("http")
+                          ? product.image
+                          : `/${product.image}`
+                      }
                       alt={product.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
                     />
@@ -172,9 +238,13 @@ function Wishlist() {
                   </p>
 
                   <button
-                    onClick={() => handleMoveToCart(product)}
-                    disabled={product.stock <= 0}
-                    className="w-full mt-5 bg-black text-white py-3 text-[10px] tracking-[0.2em] hover:bg-gray-700 transition disabled:bg-gray-300"
+                    onClick={() =>
+                      handleMoveToCart(product)
+                    }
+                    disabled={
+                      product.stock <= 0
+                    }
+                    className="w-full mt-5 bg-black text-white py-3 text-[10px] tracking-[0.2em] hover:bg-gray-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
                   >
                     {product.stock > 0
                       ? "MOVE TO CART"
@@ -184,7 +254,9 @@ function Wishlist() {
                   <button
                     onClick={() =>
                       dispatch(
-                        removeFromWishlist(product.id)
+                        deleteWishlistItem(
+                          product.wishlistId
+                        )
                       )
                     }
                     className="w-full mt-3 border border-black py-3 text-[10px] tracking-[0.2em] hover:bg-black hover:text-white transition"
@@ -204,7 +276,6 @@ function Wishlist() {
 
       )}
 
-      {/* FOOTER */}
       <footer className="bg-[#111111] text-white py-16 px-6">
 
         <div className="max-w-7xl mx-auto">
