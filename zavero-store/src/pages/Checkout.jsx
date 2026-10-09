@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { clearCart } from "../redux/slices/cartSlice";
 import { placeOrder } from "../redux/slices/orderSlice";
-import { updateProductStock } from "../services/productService";
 
 function Checkout() {
   const dispatch = useDispatch();
@@ -25,23 +24,20 @@ function Checkout() {
     (state) => state.orders.loading
   );
 
-  // TOTAL PRICE
   const totalPrice = cartItems.reduce(
     (total, item) =>
       total + item.price * item.quantity,
     0
   );
 
-  // TOTAL ITEMS
   const totalItems = cartItems.reduce(
     (total, item) =>
       total + item.quantity,
     0
   );
 
-  // PLACE ORDER
   const handlePlaceOrder = async () => {
-
+    // CHECK CART
     if (cartItems.length === 0) {
       alert("Your cart is empty");
       return;
@@ -58,7 +54,7 @@ function Checkout() {
       return;
     }
 
-    // STOCK VALIDATION
+    // CHECK STOCK
     for (const item of cartItems) {
       if (item.quantity > item.stock) {
         alert(
@@ -74,7 +70,7 @@ function Checkout() {
       total: totalPrice,
       address: address.trim(),
       paymentMethod: "Cash on Delivery",
-      status: "Placed",
+      status: "Pending",
       createdAt: new Date().toISOString(),
     };
 
@@ -84,36 +80,26 @@ function Checkout() {
         placeOrder(order)
       ).unwrap();
 
-      // UPDATE STOCK
-      for (const item of cartItems) {
-        const newStock =
-          item.stock - item.quantity;
-
-        await updateProductStock(
-          item.id,
-          newStock
-        );
-      }
-
-      // CLEAR CART
       dispatch(clearCart());
 
       alert("Order placed successfully!");
 
-      // GO TO ORDERS
       navigate("/orders");
 
     } catch (error) {
       console.error(error);
-      alert("Failed to place order");
+
+      alert(
+        typeof error === "string"
+          ? error
+          : "Failed to place order"
+      );
     }
   };
 
-  // EMPTY CART
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-[#f7f6f2] flex items-center justify-center px-6">
-
         <div className="text-center">
 
           <p className="text-[10px] tracking-[0.3em] text-gray-500">
@@ -132,7 +118,6 @@ function Checkout() {
           </Link>
 
         </div>
-
       </div>
     );
   }
@@ -163,7 +148,6 @@ function Checkout() {
 
       </nav>
 
-      {/* HEADER */}
       <section className="max-w-7xl mx-auto px-6 md:px-10 pt-16">
 
         <p className="text-[10px] tracking-[0.3em] text-gray-500">
@@ -176,12 +160,10 @@ function Checkout() {
 
       </section>
 
-      {/* CHECKOUT CONTENT */}
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-14">
 
         <div className="grid lg:grid-cols-2 gap-12">
 
-          {/* CUSTOMER DETAILS */}
           <div>
 
             <h2 className="text-xl font-medium">
@@ -190,7 +172,6 @@ function Checkout() {
 
             <div className="mt-8 space-y-6">
 
-              {/* NAME */}
               <div>
 
                 <label className="text-[10px] tracking-[0.2em]">
@@ -206,7 +187,6 @@ function Checkout() {
 
               </div>
 
-              {/* EMAIL */}
               <div>
 
                 <label className="text-[10px] tracking-[0.2em]">
@@ -222,7 +202,6 @@ function Checkout() {
 
               </div>
 
-              {/* ADDRESS */}
               <div>
 
                 <label className="text-[10px] tracking-[0.2em]">
@@ -241,7 +220,6 @@ function Checkout() {
 
               </div>
 
-              {/* PAYMENT */}
               <div>
 
                 <label className="text-[10px] tracking-[0.2em]">
@@ -267,7 +245,6 @@ function Checkout() {
 
             <div className="mt-8 border border-gray-300 bg-white">
 
-              {/* PRODUCTS */}
               {cartItems.map((item) => (
 
                 <div
@@ -309,7 +286,6 @@ function Checkout() {
 
               ))}
 
-              {/* SUMMARY */}
               <div className="p-6">
 
                 <div className="flex justify-between text-sm">
@@ -337,17 +313,14 @@ function Checkout() {
 
                 </div>
 
-                {/* PLACE ORDER */}
                 <button
                   onClick={handlePlaceOrder}
                   disabled={orderLoading}
                   className="w-full bg-black text-white py-5 mt-7 text-[10px] tracking-[0.25em] hover:bg-gray-700 transition disabled:bg-gray-400"
                 >
-
                   {orderLoading
                     ? "PLACING ORDER..."
                     : "PLACE ORDER"}
-
                 </button>
 
               </div>
@@ -360,7 +333,6 @@ function Checkout() {
 
       </section>
 
-      {/* FOOTER */}
       <footer className="bg-[#111111] text-white py-14 px-6 md:px-10">
 
         <div className="max-w-7xl mx-auto">
